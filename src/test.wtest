@@ -1,0 +1,38 @@
+import shrek.*
+
+describe "Tests de Shrek" {
+	method mision(esDificil) = object { 
+		method esDificil()= esDificil
+	}
+	
+	method misionDeLiberacion(cantidadDeTrolls) = object {
+		var cantidadTrolls = cantidadDeTrolls
+		method esDificil() = cantidadTrolls.between(4, 5)
+	}
+
+	test "Agregar misión" {
+		shrek.agregarMision(liberarAFiona)
+		assert.equals(1, shrek.misiones().size())
+	}
+
+	test "Al agregar una misión, Shrek la incluye entre sus misiones." {
+		shrek.agregarMision(liberarAFiona)
+		assert.that(shrek.misiones().contains(liberarAFiona))		
+	}
+	
+	test "Cantidad de misiones difíciles" {
+		shrek.agregarMision(self.mision(true))
+		shrek.agregarMision(self.mision(true))
+		shrek.agregarMision(self.mision(false))
+		shrek.agregarMision(self.misionDeLiberacion(3))
+		shrek.agregarMision(self.misionDeLiberacion(4))
+		shrek.agregarMision(self.misionDeLiberacion(5))
+		shrek.agregarMision(self.misionDeLiberacion(6))
+		assert.equals(4, shrek.cantidadMisionesDificiles())
+	}
+	
+	test "Liberar a Fiona no es difícil con 6 trolls" {
+		liberarAFiona.cantidadTrolls(6)
+		assert.notThat(liberarAFiona.esDificil())
+	}
+}
